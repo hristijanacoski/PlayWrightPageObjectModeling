@@ -93,7 +93,7 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
     // Fill in checkout form
     await checkoutPage.firstName.fill('John');
     await checkoutPage.lastName.fill('Doe');
-    await checkoutPage.postalCode.fill('12345');
+    await checkoutPage.zipCode.type('12345');
 
     // Continue to next page
     await checkoutPage.continueButton.click();
@@ -126,7 +126,7 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
     // Fill in checkout form
     await checkoutPage.firstName.fill('Jane');
     await checkoutPage.lastName.fill('Smith');
-    await checkoutPage.postalCode.fill('54321');
+    await checkoutPage.zipCode.fill('54321');
     await checkoutPage.continueButton.click();
 
     // Verify order summary
@@ -135,14 +135,14 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
     expect(itemCount).toBeGreaterThan(0);
 
     // Verify subtotal and total are displayed
-    await expect(checkoutOverview.subTotalPrice).toBeVisible();
-    await expect(checkoutOverview.totalPrice).toBeVisible();
+    await expect(checkoutOverview.subtotalLabel).toBeVisible();
+    await expect(checkoutOverview.totalLabel).toBeVisible();
 
     // Finish purchase
     await checkoutOverview.finishButton.click();
 
     // Verify thank you message
-    await expect(thankYouPage.thankYouMessage).toBeVisible();
+    await expect(thankYouPage.readyMessage).toBeVisible();
     await expect(page).toHaveURL(/.*checkout-complete/);
   });
 
@@ -165,13 +165,13 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
 
     await checkoutPage.firstName.fill('Test');
     await checkoutPage.lastName.fill('User');
-    await checkoutPage.postalCode.fill('99999');
+    await checkoutPage.zipCode.fill('99999');
     await checkoutPage.continueButton.click();
 
     await checkoutOverview.finishButton.click();
 
     // Click back to products
-    await thankYouPage.backHomeButton.click();
+    await thankYouPage.backToProductsButton.click();
     
     // Verify we're back at inventory
     await expect(page).toHaveURL(/.*inventory/);
@@ -208,7 +208,7 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
     const addToCartButtons = page.getByRole('button', { name: 'Add to cart' });
     await addToCartButtons.first().click();
     
-    await expect(mainPage.shoppingCartBadge).toContainText('1');
+    await expect(mainPage.inventoryItems).toContainText('1');
 
     // Navigate away and back
     await page.goto(BASE_URL + 'inventory.html');

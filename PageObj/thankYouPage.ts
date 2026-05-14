@@ -1,21 +1,25 @@
-import { Page } from "@playwright/test";
+import { Page, Locator } from '@playwright/test';
 
 export class ThankYouPage {
-    page: Page;
+  readonly page: Page;
+  readonly readyMessage: Locator;
+  readonly backToProductsButton: Locator;
 
-    constructor(page: Page){
-        this.page = page;
-    }
+  constructor(page: Page) {
+    this.page = page;
+    this.readyMessage = page.getByTestId('checkout-complete-container');
+    this.backToProductsButton = page.getByTestId('back-to-products');
+  }
 
-    async getThankYouMessage() {
-        return await this.page.getByTestId('checkout-complete-container').textContent();
-    }
+  async getThankYouMessage() {
+    return await this.readyMessage.textContent();
+  }
 
-    async isThankYouMessageVisible() {
-        return await this.page.getByTestId('checkout-complete-container').isVisible();
-    }
+  async isThankYouMessageVisible() {
+    return await this.readyMessage.isVisible();
+  }
 
-    async clickBackToProducts() {
-        await this.page.getByTestId('back-to-products').click();
-    }
+  async clickBackToProducts() {
+    await this.backToProductsButton.click();
+  }
 }

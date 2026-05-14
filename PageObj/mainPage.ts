@@ -1,38 +1,31 @@
-import { Page } from "@playwright/test";
+import { Page, Locator } from '@playwright/test';
 
-export class MainPage{    
-    page: Page;
+export class MainPage {
+  readonly page: Page;
+  readonly inventoryItems: Locator;
+  readonly cartLink: Locator;
+  readonly cartBadge: Locator;
 
-    constructor(page: Page){
-        this.page = page;
-    }
+  constructor(page: Page) {
+    this.page = page;
+    this.inventoryItems = page.locator('.inventory_item');
+    this.cartLink = page.locator('.shopping_cart_link');
+    this.cartBadge = page.locator('.shopping_cart_badge');
+  }
 
-    async addItemToCartByIndex(index: number = 0) {
-        const buttons = this.page.getByRole('button', { name: 'Add to cart' });
-        await buttons.nth(index).click();
-    }
+  async addFirstItem() {
+    await this.addItemToCartByIndex(0);
+  }
 
-    async addFirstItem() {
-        await this.addItemToCartByIndex(0);
-    }
+  async addItemToCartByIndex(index: number = 0) {
+    await this.inventoryItems.nth(index).getByRole('button', { name: 'Add to cart' }).click();
+  }
 
-    async getCartBadgeText() {
-        return await this.page.locator('.shopping_cart_badge').textContent();
-    }
+  async getCartBadgeText() {
+    return await this.cartBadge.textContent();
+  }
 
-    async isCartBadgeVisible() {
-        return await this.page.locator('.shopping_cart_badge').isVisible();
-    }
-
-    async navigateToCart() {
-        await this.page.locator('.shopping_cart_link').click();
-    }
-
-    async getInventoryItemCount() {
-        return await this.page.locator('[data-testid="inventory-item"]').count();
-    }
-
-    async getInventoryItemNames() {
-        return await this.page.getByTestId('inventory-item-name').allTextContents();
-    }
+  async navigateToCart() {
+    await this.cartLink.click();
+  }
 }

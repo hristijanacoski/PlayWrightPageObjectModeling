@@ -1,39 +1,31 @@
-import { Page } from "@playwright/test";
+import { Page, Locator } from '@playwright/test';
 
 export class CheckOutPage {
     page: Page;
+    firstName: Locator;
+    lastName: Locator;
+    zipCode: Locator;
+    continueButton: Locator;
 
-    constructor(page: Page){
-        this.page = page;
-    }
+  constructor(page: Page) {
+    this.page = page;
+    this.firstName = page.locator('#first-name');
+    this.lastName = page.locator('#last-name');
+    this.zipCode = page.locator('#postal-code');
+    this.continueButton = page.locator('#continue');
+  }
 
-    async fillFirstName(firstName: string) {
-        await this.page.locator('#first-name').fill(firstName);
-    }
+  async fillCheckoutForm(first: string, last: string, zip: string) {
+    await this.firstName.fill(first);
+    await this.lastName.fill(last);
+    await this.zipCode.fill(zip);
+  }
 
-    async fillLastName(lastName: string) {
-        await this.page.locator('#last-name').fill(lastName);
-    }
+  async clickContinue() {
+    await this.continueButton.click();
+  }
 
-    async fillPostalCode(postalCode: string) {
-        await this.page.locator('#postal-code').fill(postalCode);
-    }
-
-    async fillCheckoutForm(firstName: string, lastName: string, postalCode: string) {
-        await this.fillFirstName(firstName);
-        await this.fillLastName(lastName);
-        await this.fillPostalCode(postalCode);
-    }
-
-    async clickContinue() {
-        await this.page.locator('#continue').click();
-    }
-
-    async getErrorMessage() {
-        return await this.page.locator('[data-testid="error"]').textContent();
-    }
-
-    async isErrorDisplayed() {
-        return await this.page.locator('[data-testid="error"]').isVisible();
-    }
+  async fillInformation(first: string, last: string, zip: string) {
+    await this.fillCheckoutForm(first, last, zip);
+  }
 }

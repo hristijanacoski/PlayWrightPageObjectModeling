@@ -1,48 +1,33 @@
-import { Page } from "@playwright/test";
+import { Page, Locator } from '@playwright/test';
 
 export class ShoppingCart {
-    page: Page;
+  readonly page: Page;
+  readonly cartItems: Locator;
+  readonly checkoutButton: Locator;
+  readonly continueShoppingButton: Locator;
+  readonly removeItemButtons: Locator;
 
-    constructor(page: Page){
-        this.page = page;
-    }
+  constructor(page: Page) {
+    this.page = page;
+    this.cartItems = page.locator('.cart_item');
+    this.checkoutButton = page.locator('#checkout');
+    this.continueShoppingButton = page.locator('#continue-shopping');
+    this.removeItemButtons = page.locator('.cart_item button:has-text("Remove")');
+  }
 
-    async getCartItemCount() {
-        return await this.page.locator('.cart_item').count();
-    }
+  async getCartItemCount() {
+    return await this.cartItems.count();
+  }
 
-    async getCartItems() {
-        return await this.page.locator('.cart_item').allTextContents();
-    }
+  async removeFirstItem() {
+    await this.removeItemButtons.first().click();
+  }
 
-    async removeItemByIndex(index: number = 0) {
-        const buttons = this.page.getByRole('button', { name: 'Remove' });
-        await buttons.nth(index).click();
-    }
+  async clickCheckout() {
+    await this.checkoutButton.click();
+  }
 
-    async removeFirstItem() {
-        await this.removeItemByIndex(0);
-    }
-
-    async removeAllItems() {
-        let buttons = this.page.getByRole('button', { name: 'Remove' });
-        let count = await buttons.count();
-        
-        for (let i = 0; i < count; i++) {
-            buttons = this.page.getByRole('button', { name: 'Remove' });
-            await buttons.first().click();
-        }
-    }
-
-    async getItemPrices() {
-        return await this.page.locator('.inventory_item_price').allTextContents();
-    }
-
-    async clickCheckout() {
-        await this.page.getByRole('button', { name: 'Checkout' }).click();
-    }
-
-    async clickContinueShopping() {
-        await this.page.getByRole('button', { name: 'Continue Shopping' }).click();
-    }
+  async clickContinueShopping() {
+    await this.continueShoppingButton.click();
+  }
 }
