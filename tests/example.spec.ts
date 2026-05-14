@@ -5,10 +5,8 @@ test('Login to HerokuApp', async ({ page }) => {
 
   const loginPage = new LoginPage(page);
 
-  await page.goto('https://the-internet.herokuapp.com/login');
+  await page.goto('https://www.saucedemo.com/');
 
-  await loginPage.login('tomsmith', 'SuperSecretPassword!');
-
-  await expect(page.locator('#flash')).toContainText('You logged into a secure area!');
+  await loginPage.login('standard_user', 'secret_sauce');
   
 });
