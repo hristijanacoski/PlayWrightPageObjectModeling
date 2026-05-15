@@ -14,11 +14,16 @@ export class MainPage {
   }
 
   async addFirstItem() {
-    await this.addItemToCartByIndex(0);
+    await this.addItemToCart(0);
   }
 
-  async addItemToCartByIndex(index: number = 0) {
-    await this.inventoryItems.nth(index).getByRole('button', { name: 'Add to cart' }).click();
+  async addItemToCart(item: string | number) {
+    if (typeof item === 'string') {
+      const itemLocator = this.inventoryItems.filter({ hasText: item });
+      await itemLocator.getByRole('button', { name: 'Add to cart' }).click();
+    } else {
+      await this.inventoryItems.nth(item).getByRole('button', { name: 'Add to cart' }).click();
+    }
   }
 
   async getCartBadgeText() {

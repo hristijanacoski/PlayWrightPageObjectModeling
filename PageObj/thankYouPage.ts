@@ -7,8 +7,8 @@ export class ThankYouPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.readyMessage = page.getByTestId('checkout-complete-container');
-    this.backToProductsButton = page.getByTestId('back-to-products');
+    this.readyMessage = page.locator('.checkout_complete_container');
+    this.backToProductsButton = page.getByRole('button', { name: 'Back Home' });
   }
 
   async getThankYouMessage() {

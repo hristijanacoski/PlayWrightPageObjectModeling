@@ -87,7 +87,7 @@ test.describe('Shopping Cart Edge Cases', () => {
     
     // Add all items
     for (let i = 0; i < count; i++) {
-      await mainPage.addItemToCartByIndex(i);
+      await mainPage.addItemToCart(i);
     }
     
     // Verify all items were added
@@ -103,9 +103,9 @@ test.describe('Shopping Cart Edge Cases', () => {
     await loginPage.login('standard_user', 'secret_sauce');
     
     // Add multiple items
-    await mainPage.addItemToCartByIndex(0);
-    await mainPage.addItemToCartByIndex(1);
-    await mainPage.addItemToCartByIndex(2);
+    await mainPage.addItemToCart(0);
+    await mainPage.addItemToCart(1);
+    await mainPage.addItemToCart(2);
 
     // Go to cart
     await mainPage.navigateToCart();
@@ -136,8 +136,8 @@ test.describe('Checkout Price Calculation', () => {
     await loginPage.login('standard_user', 'secret_sauce');
     
     // Add items
-    await mainPage.addItemToCartByIndex(0);
-    await mainPage.addItemToCartByIndex(1);
+    await mainPage.addItemToCart(0);
+    await mainPage.addItemToCart(1);
 
     // Go through checkout
     await mainPage.navigateToCart();
@@ -185,8 +185,8 @@ test.describe('Multiple User Sessions', () => {
     await expect(page).toHaveURL(/.*checkout-complete/);
 
     // Logout and login as different user
-    await page.click('[data-testid="bm-menu-button"]');
-    await page.click('[data-testid="logout-sidebar-link"]');
+    await page.getByRole('button', { name: 'Open Menu' }).click();
+    await page.getByRole('link', { name: 'Logout' }).click();
 
     // User 2
     await page.goto(BASE_URL);
@@ -194,7 +194,7 @@ test.describe('Multiple User Sessions', () => {
     await loginPage2.login('problem_user', 'secret_sauce');
     
     const mainPage2 = new MainPage(page);
-    await mainPage2.addItemToCartByIndex(1);
+    await mainPage2.addItemToCart(1);
     
     await mainPage2.navigateToCart();
     
@@ -213,3 +213,4 @@ test.describe('Multiple User Sessions', () => {
   });
 
 });
+

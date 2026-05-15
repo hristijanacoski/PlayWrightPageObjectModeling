@@ -9,10 +9,10 @@ export class CheckOutPageOverview {
 
   constructor(page: Page) {
     this.page = page;
-    this.itemPrices = page.locator('[data-testid="inventory-item-price"]');
-    this.subtotalLabel = page.getByTestId('subtotal-label');
-    this.totalLabel = page.getByTestId('total-label');
-    this.finishButton = page.getByTestId('finish');
+    this.itemPrices = page.locator('.cart_item');
+    this.subtotalLabel = page.locator('.summary_subtotal_label');
+    this.totalLabel = page.locator('.summary_total_label');
+    this.finishButton = page.getByRole('button', { name: 'Finish' });
   }
 
   async getItemPrices() {

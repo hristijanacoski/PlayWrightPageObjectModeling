@@ -23,6 +23,12 @@ export class ShoppingCart {
     await this.removeItemButtons.first().click();
   }
 
+  async removeAllItems() {
+    while (await this.getCartItemCount() > 0) {
+      await this.removeFirstItem();
+    }
+  }
+
   async clickCheckout() {
     await this.checkoutButton.click();
   }

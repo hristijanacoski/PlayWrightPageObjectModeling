@@ -37,7 +37,7 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
     expect(badge).toBe('1');
 
     // Add second item to cart
-    await mainPage.addItemToCartByIndex(1);
+    await mainPage.addItemToCart(1);
     
     // Verify shopping cart badge shows 2 items
     const badge2 = await mainPage.getCartBadgeText();
@@ -53,7 +53,7 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
     
     // Add items to cart
     await mainPage.addFirstItem();
-    await mainPage.addItemToCartByIndex(1);
+    await mainPage.addItemToCart(1);
 
     // Navigate to cart
     await mainPage.navigateToCart();
@@ -108,8 +108,8 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
     await loginPage.login('standard_user', 'secret_sauce');
     
     // Add multiple items to cart
-    await mainPage.addItemToCartByIndex(0);
-    await mainPage.addItemToCartByIndex(1);
+    await mainPage.addItemToCart(0);
+    await mainPage.addItemToCart(1);
 
     // Navigate to cart
     await mainPage.navigateToCart();
@@ -207,3 +207,4 @@ test.describe('Complete E-Commerce Purchase Flow', () => {
   });
 
 });
+

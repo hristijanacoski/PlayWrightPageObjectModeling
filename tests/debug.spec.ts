@@ -56,3 +56,4 @@ test('Inspect cart page structure', async ({ page }) => {
   
   await page.screenshot({ path: 'debug-cart.png' });
 });
+
