@@ -1,0 +1,120 @@
+config:
+  target: "https://www.saucedemo.com"
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      name: "Warm-up"
+    - duration: 120
+      arrivalRate: 15
+      name: "Sustained Load"
+    - duration: 30
+      arrivalRate: 25
+      name: "Spike Test"
+  processor: "./artillery-processor.js"
+  variables:
+    users:
+      - username: "standard_user"
+        password: "secret_sauce"
+      - username: "locked_out_user"
+        password: "secret_sauce"
+      - username: "problem_user"
+        password: "secret_sauce"
+
+scenarios:
+  - name: "Homepage Load Test"
+    flow:
+      - get:
+          url: "/"
+          expect:
+            - statusCode: 200
+
+  - name: "Login Flow"
+    flow:
+      - get:
+          url: "/"
+      - post:
+          url: "/"
+          json:
+            user-name: "{{ $randomChoice(users).username }}"
+            password: "{{ $randomChoice(users).password }}"
+          expect:
+            - statusCode: 200
+
+  - name: "Full Purchase Flow"
+    flow:
+      - get:
+          url: "/"
+          expect:
+            - statusCode: 200
+      - post:
+          url: "/"
+          json:
+            user-name: "standard_user"
+            password: "secret_sauce"
+      - get:
+          url: "/inventory.html"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/cart.html"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/checkout-step-one.html"
+          expect:
+            - statusCode: 200
+      - post:
+          url: "/checkout-step-one.html"
+          json:
+            firstName: "John"
+            lastName: "Doe"
+            postalCode: "12345"
+      - get:
+          url: "/checkout-step-two.html"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/checkout-complete.html"
+          expect:
+            - statusCode: 200
+
+  - name: "Product Catalog Browse"
+    flow:
+      - get:
+          url: "/"
+      - post:
+          url: "/"
+          json:
+            user-name: "standard_user"
+            password: "secret_sauce"
+      - think: 2
+      - get:
+          url: "/inventory.html"
+          expect:
+            - statusCode: 200
+      - think: 3
+      - get:
+          url: "/inventory-item.html?id=4"
+          expect:
+            - statusCode: 200
+      - think: 2
+      - get:
+          url: "/inventory-item.html?id=5"
+          expect:
+            - statusCode: 200
+
+  - name: "Logout Flow"
+    flow:
+      - get:
+          url: "/"
+      - post:
+          url: "/"
+          json:
+            user-name: "standard_user"
+            password: "secret_sauce"
+      - get:
+          url: "/inventory.html"
+      - get:
+          url: "/logout.html"
+          expect:
+            - statusCode: 200

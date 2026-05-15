@@ -3,13 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:api": "playwright test api-tests.spec.ts",
+    "perf:test": "artillery run artillery.yml",
+    "perf:report": "artillery report artillery-report-*.json",
+    "postinstall": "npx playwright install --with-deps",
+    "prepare": "npx playwright install --with-deps"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@aws-sdk/client-lambda": "^3.1047.0",
     "@playwright/test": "^1.58.2",
-    "@types/node": "^25.3.0"
+    "@smithy/node-config-provider": "^4.4.2",
+    "@types/node": "^25.3.0",
+    "artillery": "^2.0.0",
+    "axios": "^1.6.0"
   }
 }
