@@ -10,7 +10,7 @@ config:
     - duration: 30
       arrivalRate: 25
       name: "Spike Test"
-  processor: "./artillery-processor.js"
+  processor: "../processor.js"
   variables:
     users:
       - username: "standard_user"

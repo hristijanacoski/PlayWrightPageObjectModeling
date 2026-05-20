@@ -9,8 +9,15 @@
     "test:api": "playwright test api-tests.spec.ts",
     "perf:test": "artillery run artillery.yml",
     "perf:report": "artillery report artillery-report-*.json",
+    "perf:test:new": "node scripts/run-perf-test.js",
+    "perf:test:quick": "cd performance-tests && artillery run config/artillery.yml",
+    "perf:report:view": "cd performance-tests && artillery report reports/artillery-report-*.json",
+    "perf:report:html": "node scripts/generate-html-report.js",
+    "perf:report:open": "node scripts/open-html-report.js",
+    "perf:test:full": "npm run perf:test:new && npm run perf:report:html && npm run perf:report:open",
     "postinstall": "npx playwright install --with-deps",
-    "prepare": "npx playwright install --with-deps"
+    "prepare": "npx playwright install --with-deps",
+    "auth:save": "npx playwright test tests/auth.setup.spec.ts --project=chromium"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +26,7 @@
   "devDependencies": {
     "@aws-sdk/client-lambda": "^3.1047.0",
     "@playwright/test": "^1.58.2",
+    "@smithy/config-resolver": "^4.5.3",
     "@smithy/node-config-provider": "^4.4.2",
     "@types/node": "^25.3.0",
     "artillery": "^2.0.0",
